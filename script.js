@@ -153,6 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render effects on load for the modal
     renderEffects();
+
+    // Restore music display if music was previously selected
+    const savedMusic = localStorage.getItem('selectedMusic');
+    if (savedMusic) {
+        const musicData = JSON.parse(savedMusic);
+        const musicDisplay = document.getElementById('music-display');
+        if (musicDisplay) {
+            musicDisplay.textContent = `${musicData.title} - ${musicData.artist}`;
+        }
+    }
 });
 
 
@@ -603,11 +613,19 @@ window.addSelectedSong = () => {
             thumbnail: selectedSongData.thumbnail
         };
         localStorage.setItem('selectedMusic', JSON.stringify(musicData));
+
+        // Update music display in the form
+        const musicDisplay = document.getElementById('music-display');
+        if (musicDisplay) {
+            musicDisplay.textContent = `${selectedSongData.title} - ${selectedSongData.artist}`;
+        }
+
         hideYouTubeMusic();
     } else {
         showMessageBox('Pilih Lagu', 'Silakan pilih lagu terlebih dahulu.');
     }
 };
+
 
 // --- COLLABORATION MODE LOGIC ---
 window.showCollaborationMode = () => {
